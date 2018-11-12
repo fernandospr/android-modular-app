@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.feature3">
+
+    <application>
+        <activity
+            android:name=".Feature3Activity"
+            android:label="@string/feature3_name"></activity>
+    </application>
+
+</manifest>

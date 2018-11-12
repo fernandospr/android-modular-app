@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My Modular Application</string>
+    <string name="hello_main_app">Hello Main App</string>
+    <string name="feature1">Feature1</string>
+    <string name="feature2">Feature2</string>
+    <string name="feature3">Feature3</string>
+</resources>
