@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         buttonFeature1.setOnClickListener {
             router1.showFeature1(this@MainActivity, "Fer")
         }

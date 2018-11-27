@@ -36,17 +36,17 @@ class Feature3Activity: AppCompatActivity(), Feature3Adapter.Listener {
         myListView.layoutManager = LinearLayoutManager(this)
 
         button.setOnClickListener {
-            featureViewModel.loadPlanets()
+            featureViewModel.refreshPlanets()
         }
 
-        featureViewModel.liveDataLoading.observe(this, Observer {
-            showLoadingView(it!!)
+        featureViewModel.getLoading().observe(this, Observer { isLoading ->
+            isLoading?.let { showLoadingView(it) }
         })
-        featureViewModel.liveDataError.observe(this, Observer {
-            showErrorView(it!!)
+        featureViewModel.getError().observe(this, Observer { error ->
+            error?.let { showErrorView(it) }
         })
-        featureViewModel.liveDataEntities.observe(this, Observer {
-            showEntities(it!!)
+        featureViewModel.getPlanets().observe(this, Observer { entities ->
+            entities?.let { showEntities(it) }
         })
     }
 

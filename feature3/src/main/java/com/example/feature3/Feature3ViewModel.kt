@@ -1,31 +1,47 @@
 package com.example.feature3
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.core.RepositoryCallback
 
 class Feature3ViewModel(private val repo: Feature3Repository) : ViewModel() {
 
-    var liveDataLoading: MutableLiveData<Boolean> = MutableLiveData()
-    var liveDataEntities: MutableLiveData<List<Planet>> = MutableLiveData()
-    var liveDataError: MutableLiveData<String> = MutableLiveData()
+    private val loading: MutableLiveData<Boolean> = MutableLiveData()
+    private val error: MutableLiveData<String> = MutableLiveData()
+    private val planets: MutableLiveData<List<Planet>> = MutableLiveData()
 
     init {
-        liveDataLoading.value = false
+        loading.value = false
+        error.value = null
+        planets.value = null
     }
 
-    fun loadPlanets() {
-        liveDataEntities.value = listOf()
-        liveDataLoading.value = true
+    fun getLoading(): LiveData<Boolean> = this.loading
+    fun getError(): LiveData<String> = this.error
+
+    fun getPlanets(): LiveData<List<Planet>> {
+        if (planets.value == null && loading.value == false) {
+            loadPlanets()
+        }
+        return planets
+    }
+
+    fun refreshPlanets() = loadPlanets()
+
+    private fun loadPlanets() {
+        loading.value = true
+        error.value = null
+        planets.value = null
         repo.loadFeature3Entities(object : RepositoryCallback<List<Planet>, String> {
             override fun onSuccess(entities: List<Planet>) {
-                liveDataLoading.value = false
-                liveDataEntities.value = entities
+                loading.value = false
+                planets.value = entities
             }
 
             override fun onError(errEntity: String) {
-                liveDataLoading.value = false
-                liveDataError.value = errEntity
+                loading.value = false
+                error.value = errEntity
             }
 
         })
