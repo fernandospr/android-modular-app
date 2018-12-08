@@ -1,9 +1,9 @@
 package com.example.feature3
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.Observer
 import com.example.core.RepositoryCallback
 import com.nhaarman.mockito_kotlin.*
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -13,46 +13,50 @@ class Feature3ViewModelUnitTest {
     @get:Rule
     val taskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var planets : List<Planet>
-    private lateinit var repo : Feature3Repository
-    private lateinit var viewModel : Feature3ViewModel
+    private lateinit var planets: List<Planet>
+    private lateinit var repo: Feature3Repository
+    private lateinit var viewModel: Feature3ViewModel
+    private lateinit var loadingObserver: Observer<Boolean>
+    private lateinit var errorObserver: Observer<String>
+    private lateinit var planetsObserver: Observer<List<Planet>>
 
     @Before
     fun setup() {
         planets = listOf(Planet("Mars"), Planet("Earth"), Planet("Jupiter"))
         repo = mock()
         viewModel = Feature3ViewModel(repo)
+
+        loadingObserver = mock()
+        errorObserver = mock()
+        planetsObserver = mock()
     }
 
     @Test
     fun getPlanets_shouldEmitLoading() {
         setupRepositoryWithSuccessPlanets()
-
-        val loadingObserver = viewModel.getLoading().testObserver()
+        viewModel.getLoading().observeForever(loadingObserver)
 
         viewModel.getPlanets()
 
-        Assert.assertEquals(listOf(false, true, false), loadingObserver.observedValues)
+        verify(loadingObserver).onChanged(eq(true))
     }
 
     @Test
     fun getPlanets_shouldEmitError_whenRepositoryReturnsError() {
         setupRepositoryWithError("Error")
-
-        val errorObserver = viewModel.getError().testObserver()
+        viewModel.getError().observeForever(errorObserver)
 
         viewModel.getPlanets()
 
-        Assert.assertEquals("Error", errorObserver.observedValues.last())
+        verify(errorObserver).onChanged(eq("Error"))
     }
 
     @Test
     fun getPlanets_shouldEmitPlanets_whenRepositoryReturnsSuccess() {
         setupRepositoryWithSuccessPlanets()
+        viewModel.getPlanets().observeForever(planetsObserver)
 
-        val planetsObserver = viewModel.getPlanets().testObserver()
-
-        Assert.assertEquals(planets, planetsObserver.observedValues.last())
+        verify(planetsObserver).onChanged(eq(planets))
     }
 
     @Test
