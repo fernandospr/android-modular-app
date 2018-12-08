@@ -16,7 +16,8 @@ buildscript {
 
             'junit'             : '4.12',
             'espresso'          : '3.0.2',
-            'testRunner'        : '1.0.2'
+            'testRunner'        : '1.0.2',
+            'mockitoKotlin'     : '1.6.0'
     ]
 
     repositories {
