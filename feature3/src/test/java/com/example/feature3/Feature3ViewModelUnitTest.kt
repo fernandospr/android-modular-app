@@ -60,6 +60,19 @@ class Feature3ViewModelUnitTest {
     }
 
     @Test
+    fun getPlanets_shouldEmitLoading_thenLoadFromRepository_thenEmitPlanets() {
+        setupRepositoryWithSuccessPlanets()
+        viewModel.getLoading().observeForever(loadingObserver)
+        viewModel.getPlanets().observeForever(planetsObserver)
+
+        inOrder(loadingObserver, planetsObserver, repo) {
+            verify(loadingObserver).onChanged(eq(true))
+            verify(repo).loadFeature3Entities(any())
+            verify(planetsObserver).onChanged(eq(planets))
+        }
+    }
+
+    @Test
     fun getPlanets_shouldLoadPlanetsFromRepositoryOnlyOnce_whenRepositoryReturnsSuccess() {
         setupRepositoryWithSuccessPlanets()
 
