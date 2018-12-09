@@ -3,7 +3,7 @@ package com.example.feature3
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
 import com.example.core.RepositoryCallback
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

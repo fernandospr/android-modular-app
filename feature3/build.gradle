@@ -26,7 +26,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.nhaarman:mockito-kotlin-kt1.1:${versions.mockitoKotlin}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "android.arch.core:core-testing:${versions.arch}"
     androidTestImplementation "com.android.support.test:runner:${versions.testRunner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
